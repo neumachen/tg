@@ -43,12 +43,10 @@ const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const digit = "0123456789"
 const punct = "~!@#$%^&*()_+-="
 
-func init() {
-	rand.Seed(time.Now().UTC().UnixNano())
-}
-
 // RandGen ...
 func RandGen(size int, set int, include string, exclude string) (string, error) {
+	src := rand.NewSource(time.Now().UnixNano())
+	rnd := rand.New(src)
 	all := include
 	if set&Lower > 0 {
 		all += lower
@@ -69,7 +67,7 @@ func RandGen(size int, set int, include string, exclude string) (string, error) 
 	}
 	buf := make([]byte, size)
 	for i := 0; i < size; i++ {
-		b := all[rand.Intn(lenAll)]
+		b := all[rnd.Intn(lenAll)]
 		if strings.Contains(exclude, string(b)) {
 			i--
 			continue
