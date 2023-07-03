@@ -1,0 +1,29 @@
+---
+name: Code Testing
+
+on:
+  workflow_call:
+    inputs:
+      timeout_minutes:
+        description: Job timeout configuration in minutes
+        type: number
+        default: 30
+
+jobs:
+  testing:
+    name: test
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    strategy:
+      matrix:
+        go: ["1.20", "1.19"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
+          cache: false
+
+      - name: test
+        run: go test -v ./...

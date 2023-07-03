@@ -17,10 +17,9 @@ const letterIdxMask = 1<<letterIdxBits - 1
 // letterIdxMax is the maximum number of letter indices that can fit in 63 bits.
 const letterIdxMax = 63 / letterIdxBits
 
-var src = rand.NewSource(time.Now().UnixNano())
-
 // RandStringBytes generates a random string of the specified length.
 func RandStringBytes(n int) string {
+	src := rand.NewSource(time.Now().UnixNano())
 	b := make([]byte, n)
 
 	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!

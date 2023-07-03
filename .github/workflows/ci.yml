@@ -1,0 +1,32 @@
+---
+name: Continuous Integration (CI)
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - assigned
+      - opened
+      - synchronize
+      - reopened
+      - closed
+  # https://stephencharlesweiss.com/github-actions-run-on-merge-only
+  push:
+    branches:
+      - main
+
+jobs:
+  code-quality:
+    name: Code Quality
+    uses: ./.github/workflows/code-quality.yml
+    with:
+      timeout_minutes: 5
+    secrets: inherit
+
+  testing:
+    name: Code Testing
+    uses: ./.github/workflows/testing.yml
+    with:
+      timeout_minutes: 5
+    secrets: inherit
